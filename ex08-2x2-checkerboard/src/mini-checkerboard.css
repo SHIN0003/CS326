@@ -1,0 +1,45 @@
+/* Style for the grid container */
+.grid-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* Two columns */
+    grid-gap: 10px; /* Space between squares */
+    width: 200px;
+    height: 200px;
+}
+
+/* Style for the grid items */
+.item1 {
+    width: 100px; /* Width of each square */
+    height: 100px; /* Height of each square */
+    display: flex;
+    font-size: 20px; /* Font size for 'hello' */
+    font-family: Arial, sans-serif; /* Font style for 'hello' */
+    transition: background-color 0.3s; /* Smooth transition for background color */
+    background-color: black;
+}
+
+.item2 {
+    width: 100px; /* Width of each square */
+    height: 100px; /* Height of each square */
+    display: flex;
+    font-size: 20px; /* Font size for 'hello' */
+    font-family: Arial, sans-serif; /* Font style for 'hello' */
+    transition: background-color 0.3s; /* Smooth transition for background color */
+    background-color: white;
+}
+
+/* Hover state for grid items */
+.grid-item:hover {
+    background-color: red; /* Background color on hover */
+    color: white; /* Text color on hover */
+}
+
+/* Text for 'hello' */
+.grid-item::before {
+    content: ''; /* Empty by default */
+    display: block;
+}
+
+.grid-item:hover::before {
+    content: 'hello'; /* Display 'hello' on hover */
+}
