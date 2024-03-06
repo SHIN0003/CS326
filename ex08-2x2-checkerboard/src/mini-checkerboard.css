@@ -8,38 +8,33 @@
 }
 
 /* Style for the grid items */
-.item1 {
+.grid-item {
     width: 100px; /* Width of each square */
     height: 100px; /* Height of each square */
     display: flex;
-    font-size: 20px; /* Font size for 'hello' */
-    font-family: Arial, sans-serif; /* Font style for 'hello' */
-    transition: background-color 0.3s; /* Smooth transition for background color */
-    background-color: black;
+    content : 'hello';
+    font-size: 0px; /* Hide text initially */
+    font-family: Arial, sans-serif; /* Font style for 'hello' */ 
+}
+
+/* Specific styles for .item1 and .item2 */
+.item1 {
+    background-color: black; /* Starting background color */
 }
 
 .item2 {
-    width: 100px; /* Width of each square */
-    height: 100px; /* Height of each square */
-    display: flex;
-    font-size: 20px; /* Font size for 'hello' */
-    font-family: Arial, sans-serif; /* Font style for 'hello' */
-    transition: background-color 0.3s; /* Smooth transition for background color */
-    background-color: white;
+    background-color: white; /* Starting background color */
 }
 
 /* Hover state for grid items */
 .grid-item:hover {
     background-color: red; /* Background color on hover */
     color: white; /* Text color on hover */
+    content: 'hello';
+    font-size: 20px; /* Show text on hover */
 }
 
 /* Text for 'hello' */
 .grid-item::before {
-    content: ''; /* Empty by default */
-    display: block;
-}
-
-.grid-item:hover::before {
-    content: 'hello'; /* Display 'hello' on hover */
+    content: 'hello'; /* Set 'hello' text for all states, will only show on hover due to font-size */
 }
