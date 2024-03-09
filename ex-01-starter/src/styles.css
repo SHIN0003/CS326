@@ -1,0 +1,61 @@
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f0f0f0;
+  text-align: center;
+}
+
+#main-header {
+  color: #333;
+  margin-top: 50px;
+}
+
+/* General terminal style */
+body {
+  background-color: black;
+  color: #33ff33; /* Classic green on black terminal color */
+  font-family: 'Courier New', Courier, monospace; /* Monospace font for that classic terminal look */
+  padding: 20px;
+}
+
+/* Header style */
+#display-header {
+  font-size: 24px;
+  border-bottom: 1px solid #33ff33; /* Adds a green line below the header to mimic terminal headers */
+  padding-bottom: 10px;
+  margin-bottom: 20px;
+  margin-left: auto;
+  margin-right: auto;
+  width: 60%;
+}
+
+/* TASK #2: Add in the CSS for TASK #2 here. */
+#display {
+  background-color: #000000;
+  border-bottom: 1px solid #33ff33;
+  padding-bottom: 10px;
+  margin-bottom: 20px;
+  margin-left: auto;
+  margin-right: auto;
+  width: 60%;
+  font-size: 16px;
+  line-height: 1.5;
+  white-space: pre-wrap;
+}
+
+/* Retro terminal button style */
+.action-button {
+  background-color: black;
+  color: #33ff33;
+  border: 2px solid #33ff33;
+  font-family: 'Courier New', Courier, monospace;
+  padding: 10px 20px;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.action-button:hover {
+  background-color: #33ff33;
+  color: rgb(0, 0, 0);
+  border-color: black;
+}
