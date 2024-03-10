@@ -1,0 +1,109 @@
+<html>
+  <head>
+    <title>Exercise #1</title>
+  </head>
+  <script>
+    /**
+     * Counts the number of occurrences of a specific character in a given
+     * string.
+     *
+     * The function is case-insensitive, meaning it will count characters
+     * regardless of their case. It validates input to ensure `str` is a string
+     * and `char` is a single character. If the inputs do not meet these
+     * criteria, the function returns an error message.
+     *
+     * @param {string} str - The string in which to count occurrences of the
+     * character.
+     * @param {string} char - The character to count within the string. Must be
+     * a single character.
+     * @returns {number|string} The count of the number of occurrences of `char`
+     *                          in `str` if inputs are valid. Returns an error
+     *                          message string if inputs are invalid, indicating
+     *                          the nature of the input error.
+     *
+     * @example
+     * // Returns 3
+     * console.log(letterFrequency("Hello World", "l"));
+     *
+     * @example
+     * // Returns 'Invalid input: str must be a string.'
+     * console.log(letterFrequency(12345, "5"));
+     *
+     * @example
+     * // Returns 'Invalid input: char must be a single character.'
+     * console.log(letterFrequency("Sample Text", "ex"));
+     */
+    function letterFrequency(str, char) {
+      // TASK #2: Add your code here
+      if (typeof str !== 'string') {
+        return 'Invalid input: str must be a string.';
+      }
+      if (typeof char !== 'string' || char.length !== 1) {
+        return 'Invalid input: char must be a single character.';
+      }
+      let count = 0;
+      for (let i = 0; i < str.length; i++) {
+        if (str[i].toLowerCase() === char.toLowerCase()) {
+          count++;
+        }
+      }
+      return count;
+      // Replace the line below with your implementation.
+      throw new Error('Not implemented');
+    }
+
+    /**
+     * Determines whether a given input is a palindrome. A palindrome is defined
+     * as a sequence of characters that reads the same backward as forward,
+     * ignoring spaces, punctuation, and capitalization. This function first
+     * normalizes the input by removing non-alphanumeric characters and
+     * converting all letters to lowercase. It then checks if the normalized
+     * string is a palindrome.
+     *
+     * The function is designed to handle inputs of any type by converting them
+     * to a string representation before performing the palindrome check.
+     * Special cases, such as empty strings or strings that become empty after
+     * normalization, are considered palindromes.
+     *
+     * @param {any} input The input to be checked for palindromicity. While the
+     *                    input can be of any type, it is primarily expected to
+     *                    be a string. Non-string inputs will be converted to
+     *                    strings before processing.
+     * @returns {boolean} Returns `true` if the input is a palindrome (after
+     * normalization), and `false` otherwise.
+     *
+     * @example
+     * // returns true
+     * isPalindrome('A man, a plan, a canal: Panama');
+     *
+     * @example
+     * // returns false
+     * isPalindrome('Hello, World!');
+     *
+     * @example
+     * // returns true for non-string input that is a palindrome when converted to string
+     * isPalindrome(12321);
+     *
+     * @example
+     * // returns true
+     * isPalindrome(' , !');
+     *
+     * @example
+     * // returns true for an empty string
+     * isPalindrome('');
+     */
+    function isPalindrome(s) {
+      // TASK #3: Add your code here
+      s = String(s).replace(/[^a-zA-Z0-9]/g, '').toLowerCase();
+      for (let i = 0; i < s.length / 2; i++) {
+        if (s[i] !== s[s.length - 1 - i]) {
+          return false;
+        }
+      }
+      return true;
+      
+      // Replace the line below with your implementation.
+      throw new Error('Not implemented');
+    }
+  </script>
+</html>
