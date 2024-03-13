@@ -19,9 +19,13 @@ decodeTextBox.addEventListener("keyup", colorDecodedTextBox);
 // TASK #3: Add event handlers for cypher key, encode, and decode text boxes.
 //   Every time the user types in a character, the cypher key and the
 //   encoded/decoded text boxes should have their state saved.
+// const encodedTextBox = document.getElementById("encoded");
+// const decodedTextBox = document.getElementById("decoded");
 keyTextInput.addEventListener("keyup", saveState);
 encodeTextBox.addEventListener("keyup", saveState);
 decodeTextBox.addEventListener("keyup", saveState);
+// encodedTextBox.addEventListener("keyup", saveState);
+// decodedTextBox.addEventListener("keyup", saveState);
 // TASK #3: Add an event handler for the clear button.
 //   When the user clicks the clear button, the state should be cleared.
 document.getElementById("clear-state").addEventListener("click", clearState);
@@ -37,6 +41,8 @@ function saveState() {
   localStorage.setItem("key", JSON.stringify(keyTextInput.value));
   localStorage.setItem("encode", JSON.stringify(encodeTextBox.value));
   localStorage.setItem("decode", JSON.stringify(decodeTextBox.value));
+  // localStorage.setItem("encoded", JSON.stringify(encodedTextBox.value));
+  // localStorage.setItem("decoded", JSON.stringify(decodedTextBox.value));
   
 }
 
@@ -46,13 +52,25 @@ function restoreState() {
   keyTextInput.value = keyText ? JSON.parse(keyText) : '';
 
   // Restore the state of the encode text box
-  const encodeText = localStorage.getItem("encode");
-  encodeTextBox.value = encodeText ? JSON.parse(encodeText) : '';
+  const encodeTextValue = localStorage.getItem("encode");
+  encodeTextBox.value = encodeTextValue ? JSON.parse(encodeTextValue) : '';
 
   // Restore the state of the decode text box
-  const decodeText = localStorage.getItem("decode");
-  decodeTextBox.value = decodeText ? JSON.parse(decodeText) : '';
+  const decodeTextValue = localStorage.getItem("decode");
+  decodeTextBox.value = decodeTextValue ? JSON.parse(decodeTextValue) : '';
+
+  // Update the decoder cipher key
+  decoder.cipher = keyTextInput.value;
+
+  // Trigger encoding and decoding to update the encoded and decoded text boxes
+  encodeText();
+  decodeText();
+
+  // Update the colors of the text boxes
+  colorEncodedTextBox();
+  colorDecodedTextBox();
 }
+
 
 
 
@@ -63,7 +81,8 @@ function clearState() {
   localStorage.removeItem("key");
   localStorage.removeItem("encode");
   localStorage.removeItem("decode");
-
+  // localStorage.removeItem("encoded");
+  // localStorage.removeItem("decoded");
   
 }
 
