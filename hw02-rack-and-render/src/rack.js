@@ -22,6 +22,6 @@ export class Rack {
    */
   takeFromBag(n, game) {
     // TASK #6: Implement the takeFromBag method
-    
+    this.available = game.takeFromBag(n)
   }
 }
