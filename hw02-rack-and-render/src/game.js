@@ -116,15 +116,15 @@ export class Game {
 
   #placeOnBoard(word, position, direction) {
     // TASK #4.2: Implement the #placeOnBoard method
-    x = position.x
-    y = position.y
-    for (char in word) {
+    let x = position.x
+    let y = position.y
+    for (let c of word) {
       if (direction === true) {
-        this.#grid[x][y] = char
+        this.#grid[x][y] = c
         y++
       }
       else {
-        this.#grid[x][y] = char
+        this.#grid[x][y] = c
         x++
       }
     }
