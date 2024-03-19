@@ -160,7 +160,16 @@ export class Game {
 
   render(element) {
     // TASK #7: Implement the render method
-    
+    element.innerHTML = '';
+    for (let i = 1; i <= 15; i++) {
+      for (let j = 1; j <= 15; j++) {
+        const cell = document.createElement("div");
+        cell.innerText = this.#grid[i][j] || '';
+        cell.classList.add("grid-item");
+        if (scoring.label(i, j) !== '') cell.classList.add(scoring.label(i, j))
+        element.appendChild(cell)
+      }
+    }
   }
 
   // These functions are used by the auto-grader to check your implementation.
