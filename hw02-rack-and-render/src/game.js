@@ -82,8 +82,14 @@ export class Game {
    * @returns {Array<string>} The first n tiles removed from the bag.
    */
   takeFromBag(n) {
-    // TASK #5: Implement the takeFromBag method
-    
+    // Check if the number of tiles to take is greater than the number of remaining tiles
+    if (n > this.#bag.length) {
+      n = this.#bag.length; // Take only the remaining tiles
+    }
+  
+    let res = []
+    res = this.#bag.splice(0, n)
+    return res;
   }
 
   #canBePlacedOnBoard(word, position, direction) {
