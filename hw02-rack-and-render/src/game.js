@@ -39,9 +39,11 @@ export class Game {
     // 5 points: K ×1
     // 8 points: J ×1, X ×1
     // 10 points: Q ×1, Z ×1
-    let letters = {E: 12, A: 9, I: 9, O: 8, N: 6, R: 6, T: 6, L: 4, S: 4, U: 4, 
-      D: 4, G: 3, B: 2, C: 2, M: 2, P: 2, F: 2, 
-      H: 2, V: 2, W: 2, Y: 2, K: 1, J: 1, X: 1, Q: 1, Z: 1, '*': 2};
+    let letters = {
+      "e": 12, "a": 9, "i": 9, "o": 8, "n": 6, "r": 6, "t": 6, "l": 4, "s": 4, "u": 4,
+      "d": 4, "g": 3, "b": 2, "c": 2, "m": 2, "p": 2, "f": 2,
+      "h": 2, "v": 2, "w": 2, "y": 2, "k": 1, "j": 1, "x": 1, "q": 1, "z": 1, "*": 2
+    };
     for (let letter in letters) {
       for (let i = 0; i < letters[letter]; i++) {
         bag.push(letter);
@@ -95,6 +97,9 @@ export class Game {
   #canBePlacedOnBoard(word, position, direction) {
     // TASK #4.1: Implement the #canBePlacedOnBoard method
     let length = word.length;
+    console.log(word)
+    console.log(position)
+    console.log(direction)
     if (position === undefined || position.x === undefined || position.y === undefined 
       || position.x < 1 || position.x > 15 || position.y < 1 || position.y > 15 || direction === undefined 
       || word === undefined) {
@@ -119,7 +124,7 @@ export class Game {
     let x = position.x
     let y = position.y
     for (let c of word) {
-      if (direction === true) {
+      if (direction === false) {
         this.#grid[x][y] = c
         y++
       }
@@ -148,11 +153,13 @@ export class Game {
   playAt(word, position, direction) {
     // We first check if the word can be placed
     if (!this.#canBePlacedOnBoard(word, position, direction)) {
+      console.log("returned false")
       return -1;
     }
 
     // Place the word on the board
     this.#placeOnBoard(word, position, direction);
+    console.log(this.#grid)
 
     // Compute the score
     return scoring.score(word, position, direction);
