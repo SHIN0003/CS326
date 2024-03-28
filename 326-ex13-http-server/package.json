@@ -1,0 +1,34 @@
+{
+  "name": "326-ex13-http-server",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "type": "module",
+  "license": "AGPL-version-3.0",
+  "private": false,
+  "engines": {
+    "node": ">= 14.0.0",
+    "npm": ">= 6.0.0"
+  },
+  "homepage": "",
+  "repository": {
+    "type": "git",
+    "url": ""
+  },
+  "bugs": "",
+  "keywords": [],
+  "author": {
+    "name": "Andrew Tai",
+    "email": "andrewtai@umass.edu",
+    "spireid": "33420335"
+  },
+  "contributors": [],
+  "scripts": {
+    "start": "node src/server.js",
+    "submit": "node js/submit.js"
+  },
+  "dependencies": {
+    "archiver": "^6.0.1",
+    "http-server": "^14.1.1"
+  }
+}
