@@ -1,0 +1,38 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Task Management App</title>
+    <style>
+      .completed {
+        text-decoration: line-through;
+      }
+
+      #loading-display {
+        border: 2px solid rgb(174, 187, 211);
+        background-color: rgb(184, 206, 245);
+        color: rgb(25, 11, 82);
+        height: 40px;
+        text-align: center;
+      }
+
+      .task-name {
+        margin-left: 10px;
+      }
+    </style>
+    <script type="module" src="app-callback.js"></script>
+  </head>
+  <body>
+    <h1>Task Management App</h1>
+
+    <form id="task-form">
+      <label for="task-input">New Task:</label>
+      <input type="text" id="task-input" required />
+      <button id="add-task" type="submit">Add Task</button>
+    </form>
+
+    <h1 id="loading-display"></h1>
+
+    <h2>Task List:</h2>
+    <ul id="task-list"></ul>
+  </body>
+</html>
