@@ -102,6 +102,10 @@ if (playButtonElement) {
     wordElement.value = "";
     xElement.value = "";
     yElement.value = "";
+    for (let i = 0; i < playableWord.length; i++) {
+      rack.removeTile(playableWord[i]);
+    }
+    rack.render(rackElement);
     
     // TASK #7 (Step 5): Clear the hint UI element
     // - Clear the hint display UI element (ID is 'hint')
