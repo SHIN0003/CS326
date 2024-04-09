@@ -102,6 +102,10 @@ export class Game {
     // TASK #3: Reset the game board and bag of tiles, and save them to the
     // store.
     // Add your implementation here.
+    this.#bag = this.#initBag();
+    this.#grid = this.#initGrid();
+    Store.store().set("bag", this.#bag)
+    Store.store().set("grid", this.#grid)
   }
 
   /**
