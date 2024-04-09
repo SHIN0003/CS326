@@ -64,10 +64,13 @@ export class Rack {
     let rack = element;
     rack.innerHTML = "";
     for (let letter in this.available) {
-      let tile = document.createElement("div");
-      tile.classList.add("grid-item");
-      tile.innerText = letter;
-      rack.appendChild(tile);
+      let tempNum = this.available[letter];
+      for (let i = 0; i < tempNum; i++) {
+        let tile = document.createElement("div");
+        tile.classList.add("grid-item");
+        tile.innerText = letter;
+        rack.appendChild(tile);
+      }
     }
   }
 

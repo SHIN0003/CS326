@@ -31,10 +31,7 @@ const game = new Game();
 // - Take 7 tiles from the game bag and add them to the rack.
 // - Render the rack to the rackElement.
 const rack = new Rack();
-
 rack.takeFromBag(7, game);
-
-
 rack.render(rackElement);
 game.render(boardGridElement);
 
@@ -99,7 +96,6 @@ if (playButtonElement) {
     //   construct the word.
     // - Store the result in a variable named `playableWord`.
     const playableWord = constructWord(rack.available, word);
-
     game.render(boardGridElement);
     // TASK #6 (Step 4): Update the UI elements
     // - Clear the word, x, and y input elements.
