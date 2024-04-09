@@ -106,6 +106,7 @@ export class Game {
     this.#grid = this.#initGrid();
     Store.store().set("bag", this.#bag)
     Store.store().set("grid", this.#grid)
+    window.location.reload()
   }
 
   /**

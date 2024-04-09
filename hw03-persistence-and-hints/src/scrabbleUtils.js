@@ -209,7 +209,15 @@ function bestPossibleWords(availableTiles) {
 function isValid(word) {
   // TASK #4: Implement the isValid function.
   // Your solution goes here:
-  throw new Error("You need to implement this function!");
+  if (word.includes("*")) {
+    for (let i = 0; i < 26; i++) {
+      let newWord = word.replace("*", String.fromCharCode(97 + i));
+      if (dictionary.includes(newWord)) {
+        return true;
+      }
+    }
+  }
+  return dictionary.includes(word);
 }
 
 // This exports our public functions.
@@ -220,4 +228,5 @@ export {
   possibleWords,
   bestPossibleWords,
   // TASK #4: Add the isValid function to the exports.
+  isValid
 };
