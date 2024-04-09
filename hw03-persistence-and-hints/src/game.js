@@ -38,6 +38,8 @@ export class Game {
     else {
       this.#bag = this.#initBag();
       this.#grid = this.#initGrid();
+      Store.store().set("bag", this.#bag)
+      Store.store().set("grid", this.#grid)
     }
 
   }
