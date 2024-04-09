@@ -8,7 +8,7 @@ const boardGridElement = document.getElementById("board");
 const playButtonElement = document.getElementById("play");
 // TASK #3: Get the reset button element from the DOM.
 // Add your implementation here.
-
+const resetButtonElement = document.getElementById("reset-button");
 // TASK #5 Part 3: Get the rack element from the DOM.
 // - Get the rack element from the DOM and store it in a variable named
 //   `rackElement`.
@@ -101,7 +101,11 @@ if (playButtonElement) {
 // TASK #3: Add an event listener to the reset button to reset the game board.
 //
 // Add your implementation here:
-
+if (resetButtonElement) {
+  resetButtonElement.addEventListener("click", () => {
+    game.reset();
+  });
+}
 // TASK #7 (Step 4): Add an event listener to the help button to get a hint.
 //
 // This event listener responds to clicks on the "Help" button. Upon clicking:
