@@ -1,8 +1,9 @@
 import { Game } from "./game.js";
 // TASK #5: Import the Rack class from the rack.js file.
+import { Rack } from "./rack.js";
 // TASK #6: Import the scrabbleUtils module from the scrabbleUtils.js
 // file.
-
+import { canConstructWord, constructWord, isValid } from "./scrabbleUtils.js";
 // UI Components
 const boardGridElement = document.getElementById("board");
 const playButtonElement = document.getElementById("play");
@@ -14,6 +15,7 @@ const resetButtonElement = document.getElementById("reset-button");
 //   `rackElement`.
 // - The rack element has an id of 'rack'.
 // - Use the `getElementById` method to get the rack element.
+const rackElement = document.getElementById("rack");
 
 // TASK #7 (Step 3): Get the help button element from the DOM.
 // - Get the help button from the DOM and store it in a variable named
@@ -28,7 +30,12 @@ const game = new Game();
 // - Create a new instance of the Rack class and store it in a variable named `rack`.
 // - Take 7 tiles from the game bag and add them to the rack.
 // - Render the rack to the rackElement.
+const rack = new Rack();
 
+rack.takeFromBag(7, game);
+
+
+rack.render(rackElement);
 game.render(boardGridElement);
 
 // We check to make sure the play button exists before adding the event
@@ -58,7 +65,10 @@ if (playButtonElement) {
     //   was entered.
     // - If the word can be constructed from the available tiles, continue to
     //   the next step; otherwise return.
-
+    if (!canConstructWord(rack.available, word)) {
+      alert(`The word "${word}" cannot be constructed from the available tiles.`);
+      return;
+    }
     // TASK #6 (Step 2): Check if the word is valid
     // - Check if the word is a valid word using the `isValid` function from the
     //   `scrabbleUtils` module.
@@ -68,10 +78,12 @@ if (playButtonElement) {
     // - If the word is valid, continue to the next step; otherwise return
     //
     // Modify this assignment by following the instructions above
-    const validWord = word;
-
+    if (!isValid(word)) {
+      alert(`"${word}" is not a valid word.`);
+      return;
+    }
     // Try to play the word on the board.
-    const result = game.playAt(validWord, { x, y }, direction);
+    const result = game.playAt(word, { x, y }, direction);
     if (result === -1) {
       alert(
         `The word cannot be placed in a ${directionElement.value} position at coordinates(${x}), ${y}).`,
@@ -86,11 +98,15 @@ if (playButtonElement) {
     //   word as arguments and returns an array of tiles that can be used to
     //   construct the word.
     // - Store the result in a variable named `playableWord`.
-    const playableWord = word;
+    const playableWord = constructWord(rack.available, word);
 
     game.render(boardGridElement);
     // TASK #6 (Step 4): Update the UI elements
     // - Clear the word, x, and y input elements.
+    wordElement.value = "";
+    xElement.value = "";
+    yElement.value = "";
+    
     // TASK #7 (Step 5): Clear the hint UI element
     // - Clear the hint display UI element (ID is 'hint')
   });

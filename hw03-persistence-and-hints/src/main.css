@@ -12,10 +12,11 @@
   width: 294px;
   margin: auto;
   display: grid;
-  grid-template-columns: repeat(7, auto);
+  grid-template-columns: repeat(7, 42px);
   margin-top: 1em;
   margin-bottom: 1em;
 }
+
 
 #hint-wrapper {
   text-align: center;

@@ -61,7 +61,14 @@ export class Rack {
     //   property.
     // - You can append a child element to a parent element using the
     //   appendChild method.
-    throw new Error("Not implemented");
+    let rack = element;
+    rack.innerHTML = "";
+    for (let letter in this.available) {
+      let tile = document.createElement("div");
+      tile.classList.add("grid-item");
+      tile.innerText = letter;
+      rack.appendChild(tile);
+    }
   }
 
   /**
@@ -80,7 +87,14 @@ export class Rack {
     //     - If the count reaches zero, remove the tile from the available
     //       tiles.
     // - Return true.
-    throw new Error("Not implemented");
+    if (this.available[tile]) {
+      --this.available[tile];
+      if (this.available[tile] === 0) {
+        delete this.available[tile];
+      }
+      return true;
+    }
+    return false;
   }
 
   /**
