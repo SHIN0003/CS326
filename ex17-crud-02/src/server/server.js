@@ -43,6 +43,7 @@
 import * as http from "http";
 import * as url from "url";
 import * as db from "./db.js";
+import * as fsp from "fs/promises";
 
 const headerFields = { "Content-Type": "text/html" };
 
@@ -59,18 +60,24 @@ const headerFields = { "Content-Type": "text/html" };
  * provided, the function will respond with an error message.
  */
 async function createCounter(response, name) {
-  // TASK #3: Implement this function.
   if (name === undefined) {
     response.writeHead(400, headerFields);
     response.write("<h1>Counter Name Required</h1>");
     response.end();
+  } else {
+    try {
+      await db.saveCounter(name, 0);
+      response.writeHead(200, headerFields);
+      response.write(`<h1>Counter ${name} Created</h1>`);
+      response.end();
+    } catch (err) {
+      response.writeHead(500, headerFields);
+      response.write("<h1>Internal Server Error</h1>");
+      response.write("<p>Unable to create counter</p>");
+      response.write(`<p>This is likely a duplicate counter name!</p>`);
+      response.end();
+    }
   }
-  db.saveCounter(name, 0).then(() => {
-    response.writeHead(200, headerFields);
-    response.write(`<h1>Counter ${name} Created</h1>`);
-    response.end();
-  });
-
 }
 
 /**
@@ -89,14 +96,12 @@ async function createCounter(response, name) {
  * client is then informed that the counter was not found.
  */
 async function readCounter(response, name) {
-  // TASK #4: Implement this function.
   try {
     const counter = await db.loadCounter(name);
     response.writeHead(200, headerFields);
     response.write(`<h1>Counter ${counter._id} = ${counter.count}</h1>`);
     response.end();
-  }
-  catch (err) {
+  } catch (err) {
     response.writeHead(404, headerFields);
     response.write(`<h1>Counter ${name} Not Found</h1>`);
     response.end();
@@ -123,19 +128,18 @@ async function readCounter(response, name) {
 async function updateCounter(response, name) {
   try {
     const counter = await db.loadCounter(name);
-    counter.count = counter.count + 1;
-    await db.modifyCounter(counter).then(() => {
-      response.writeHead(200, headerFields);
-      response.write(`<h1>Counter ${counter._id} Updated</h1>`);
-      response.end();
-    });
-  }
-  catch (err) {
+    counter.count++;
+    await db.modifyCounter(counter);
+    response.writeHead(200, headerFields);
+    response.write(`<h1>Counter ${counter._id} Updated</h1>`);
+    response.end();
+  } catch (err) {
     response.writeHead(404, headerFields);
     response.write(`<h1>Counter ${name} Not Found</h1>`);
     response.end();
   }
 }
+
 /**
  * Asynchronously deletes a specified counter by its name. The function attempts
  * to find the counter in the database. If found, it sends a confirmation
@@ -240,24 +244,114 @@ async function dumpCounters(response) {
  */
 async function basicServer(request, response) {
   const options = url.parse(request.url, true).query;
-  // TASK #2: Implement the basic server functionality.
-  // Complete the following logic for `createCounter`, `readCounter`, and
-  // `updateCounter`.
-  if (request.url.startsWith("/create")) {
-    await createCounter(response, options.name);
+
+  // Check if the request method and path are equal to the given method and path
+  const isEqual = (method, path) =>
+    request.method === method && request.url === path;
+
+  // Match the request method and path
+  const isMatch = (method, path) =>
+    request.method === method && request.url.startsWith(path);
+
+  // Check if the request URL ends with a specific suffix
+  const hasSuffix = (suffix) =>
+    request.method === "GET" && request.url.endsWith(suffix);
+
+  // Get the suffix of the request URL
+  const getSuffix = (urlpath = request.url) => {
+    const parts = urlpath.split(".");
+    return parts[parts.length - 1];
+  };
+
+  // Get the content type based on the file type
+  const getContentType = (urlpath = request.url) =>
+    ({
+      html: "text/html",
+      css: "text/css",
+      js: "text/javascript",
+    })[getSuffix(urlpath)] || "text/plain";
+
+  const sendStaticFile = async (urlpath = request.url) => {
+    try {
+      // Read the file from the src/client folder and send it back to the client
+      const data = await fsp.readFile("src" + urlpath, "utf8");
+      response.writeHead(200, { "Content-Type": getContentType(urlpath) });
+      response.write(data);
+      response.end();
+      return;
+    } catch (err) {
+      response.writeHead(404, { "Content-Type": "text/plain" });
+      response.write("Not found: " + urlpath);
+      response.end();
+      return;
+    }
+  };
+
+  // TASK #2: Modify basicServer to handle different HTTP methods
+  const method = "some_expression"; // you should change this!
+  switch (method) {
+    case "some_case": // also definitely change this; you'll need to add more switch cases.
+      response.write("Not Implemented");
+      response.end();
+      break;
+    // DO NOT MODIFY OPTIONS AND DEFAULT CASE
+    case "OPTIONS":
+      response.writeHead(200, headerFields);
+      response.end();
+      break;
+    default:
+      response.writeHead(405, { "Content-Type": "text/plain" });
+      response.end("Method Not Allowed");
   }
-  else if (request.url.startsWith("/update")) {
-    await updateCounter(response, options.name);
-  }
-  else if (request.url.startsWith("/read")) {
+  // TASK #2: Modify basicServer to handle different HTTP methods
+  //
+  // Modify the `basicServer` function to handle different HTTP methods. The
+  // function should check the request method and route the request to the
+  // appropriate counter operation based on the method and URL path. Use the
+  // `isMatch` helper function to determine the request method and path. If the
+  // request method and path match a specific operation, call the corresponding
+  // function (e.g., `createCounter`, `readCounter`, `updateCounter`,
+  // `deleteCounter`, `dumpCounters`). If the request method and path do not
+  // match any operation, respond with a 405 status code indicating that the
+  // method is not allowed.
+
+  // Here is an example of how to handle a GET request to the '/read' path:
+  // Use this as a model for handling other methods and paths.
+  if (isMatch("GET", "/read")) {
     await readCounter(response, options.name);
+    return;
   }
-  else if (request.url.startsWith("/delete")) {
-    await deleteCounter(response, options.name);
-  } 
-  else {
-    await dumpCounters(response);
+
+  // The following code handles static file requests for the client-side code.
+  // You do not need to modify this code. It serves the client-side files from
+  // the `src/client` directory.
+  if (
+    isEqual("GET", "") ||
+    isEqual("GET", "/") ||
+    isEqual("GET", "/client") ||
+    isEqual("GET", "/client/") ||
+    isEqual("GET", "/client/index.html")
+  ) {
+    sendStaticFile("/client/index.html");
+    return;
   }
+
+  if (
+    (isMatch("GET", "") || isMatch("GET", "/")) &&
+    (hasSuffix(".html") || hasSuffix(".css") || hasSuffix(".js"))
+  ) {
+    sendStaticFile("/client" + request.url);
+    return;
+  }
+
+  // TASK #2: If no matching route is found, respond with a 405 status code
+  // Hint: Use the `response.writeHead` and `response.end` methods to send the
+  // appropriate response. Your server must respond with:
+  // - A 405 status code (Method Not Allowed)
+  // - A content type of 'text/plain'
+  // - A response body containing 'Method Not Allowed'
+  //
+  // Add your solution here:
 }
 
 http.createServer(basicServer).listen(3260, () => {
