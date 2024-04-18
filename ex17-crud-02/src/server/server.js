@@ -216,7 +216,30 @@ async function dumpCounters(response) {
     response.end();
   }
 }
+function serveStaticFiles(path, response) {
+  if (path === "" || path === "index.html") {
+    sendStaticFile("/client/index.html", response);
+  } else {
+    sendStaticFile(`/client/${path}`, response);
+  }
+}
 
+function methodNotAllowed(response) {
+  response.writeHead(405, { "Content-Type": "text/plain" });
+  response.end("Method Not Allowed");
+}
+
+function sendStaticFile(filePath, response) {
+  try {
+    const data = await fsp.readFile("src/client" + filePath, "utf8");
+    response.writeHead(200, { "Content-Type": getContentType(filePath) });
+    response.write(data);
+    response.end();
+  } catch (err) {
+    response.writeHead(404, { "Content-Type": "text/plain" });
+    response.write("Not found: " + filePath);
+    response.end();
+  }
 /**
  * Asynchronously handles HTTP requests for various counter operations based on
  * the request URL. It supports creating, reading, updating, deleting, and
@@ -286,23 +309,51 @@ async function basicServer(request, response) {
       return;
     }
   };
+  
 
   // TASK #2: Modify basicServer to handle different HTTP methods
-  const method = "some_expression"; // you should change this!
+  let method = request.method;
+  let path = pathname.split('/')[1];  // gets the main operation part of the path
+
   switch (method) {
-    case "some_case": // also definitely change this; you'll need to add more switch cases.
-      response.write("Not Implemented");
-      response.end();
+    case "GET":
+      if (path === "read" && query.name) {
+        await readCounter(response, query.name);
+      } else if (path === "all") {
+        await dumpCounters(response);
+      } else {
+        serveStaticFiles(path, response);
+      }
       break;
-    // DO NOT MODIFY OPTIONS AND DEFAULT CASE
+    case "POST":
+      if (path === "create" && query.name) {
+        await createCounter(response, query.name);
+      } else {
+        methodNotAllowed(response);
+      }
+      break;
+    case "PUT":
+      if (path === "update" && query.name) {
+        await updateCounter(response, query.name);
+      } else {
+        methodNotAllowed(response);
+      }
+      break;
+    case "DELETE":
+      if (path === "delete" && query.name) {
+        await deleteCounter(response, query.name);
+      } else {
+        methodNotAllowed(response);
+      }
+      break;
     case "OPTIONS":
       response.writeHead(200, headerFields);
       response.end();
       break;
     default:
-      response.writeHead(405, { "Content-Type": "text/plain" });
-      response.end("Method Not Allowed");
+      methodNotAllowed(response);
   }
+}
   // TASK #2: Modify basicServer to handle different HTTP methods
   //
   // Modify the `basicServer` function to handle different HTTP methods. The
@@ -320,6 +371,26 @@ async function basicServer(request, response) {
   if (isMatch("GET", "/read")) {
     await readCounter(response, options.name);
     return;
+  }
+  else if (isMatch("POST", "/create")) {
+    await createCounter(response, options.name);
+    return;
+  }
+  else if (isMatch("PUT", "/update")) {
+    await updateCounter(response, options.name);
+    return;
+  }
+  else if (isMatch("DELETE", "/delete")) {
+    await deleteCounter(response, options.name);
+    return;
+  }
+  else if (isMatch("GET", "/all")) {
+    await dumpCounters(response);
+    return;
+  }
+  else {
+    response.writeHead(405, { "Content-Type": "text/plain" });
+    response.end("Method Not Allowed");
   }
 
   // The following code handles static file requests for the client-side code.
@@ -352,6 +423,9 @@ async function basicServer(request, response) {
   // - A response body containing 'Method Not Allowed'
   //
   // Add your solution here:
+  response.writeHead(405, { "Content-Type": "text/plain" });
+  response.end("Method Not Allowed");
+  return;
 }
 
 http.createServer(basicServer).listen(3260, () => {
