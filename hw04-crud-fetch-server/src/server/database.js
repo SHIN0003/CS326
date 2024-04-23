@@ -113,7 +113,20 @@ const Database = (dbname) => {
       // Hint: You can use the saveWordScore method as a reference.
       // Hint: You will need to update the 'games' collection instead of the
       //       'words' collection.
-      return { status: "error", message: "Method not implemented" };
+      try {
+        const db = getDB();
+        const data = await db.get("games");
+        data.words.push({ name, score });
+        await db.put(data);
+        db.close();
+        return { status: "success" };
+      } catch (e) {
+        return {
+          status: "error",
+          message: "Failed to save word score",
+          error: e.message,
+        };
+      }
     },
 
     /**
@@ -134,7 +147,21 @@ const Database = (dbname) => {
      */
     top10WordScores: async () => {
       // TASK #8: Implement top10WordScores
-      return { status: "error", message: "Method not implemented" };
+      try {
+        const db = getDB();
+        const data = await db.get("words");
+        const sortedData = data.words.sort((a, b) => b.score - a.score);
+        const top10 = sortedData.slice(0, 10);
+        db.close();
+        return { status: "success", data: top10 };
+      }
+      catch (e) {
+        return {
+          status: "error",
+          message: "Failed to retrieve word scores",
+          error: e.message,
+        };
+      }
     },
 
     /**
@@ -155,7 +182,21 @@ const Database = (dbname) => {
      */
     top10GameScores: async () => {
       // TASK #9: Implement top10GameScores
-      return { status: "error", message: "Method not implemented" };
+      try {
+        const db = getDB();
+        const data = await db.get("games");
+        const sortedData = data.games.sort((a, b) => b.score - a.score);
+        const top10 = sortedData.slice(0, 10);
+        db.close();
+        return { status: "success", data: top10 };
+      }
+      catch (e) {
+        return {
+          status: "error",
+          message: "Failed to retrieve word scores",
+          error: e.message,
+        };
+      }
     },
   };
 

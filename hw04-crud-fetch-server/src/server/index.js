@@ -20,7 +20,14 @@ async function basicServer(request, response) {
   if (method === "POST" && pathname === "/wordScore") {
     // TASK #10: Implement the /wordScore endpoint.
     // Add your implementation here.
-
+    let word = query.word.toLowerCase();
+    let scores = query.score;
+    let name = query.name;
+    await database.saveWordScore(name, word, scores).then((response) => {
+      response.writeHead(200, { "Content-Type": "application/json" });
+      response.write(JSON.stringify(result));
+    });
+    
     // HTTP status code 501 Not Implemented is returned by a server when the
     // request method is not supported by the server and cannot be handled. This
     // status code implies that the server either does not recognize the request
@@ -31,7 +38,10 @@ async function basicServer(request, response) {
   } else if (method === "GET" && pathname === "/highestWordScores") {
     // TASK #11: Implement the /highestWordScores endpoint.
     // Add your implementation here.
-
+    await database.top10WordScores().then((response) => {
+      response.writeHead(200, { "Content-Type": "application/json" });
+      response.write(JSON.stringify(result));
+    });
     // HTTP status code 501 Not Implemented is returned by a server when the
     // request method is not supported by the server and cannot be handled. This
     // status code implies that the server either does not recognize the request
@@ -42,6 +52,12 @@ async function basicServer(request, response) {
   } else if (method === "POST" && pathname === "/gameScore") {
     // TASK #12: Implement the /gameScore endpoint.
     // Add your implementation here.
+    let name = query.name;
+    let score = query.score;
+    await database.saveGameScore(name, score).then((response) => {
+      response.writeHead(200, { "Content-Type": "application/json" });
+      response.write(JSON.stringify(result));
+    });
 
     // HTTP status code 501 Not Implemented is returned by a server when the
     // request method is not supported by the server and cannot be handled. This
@@ -53,7 +69,10 @@ async function basicServer(request, response) {
   } else if (method === "GET" && pathname === "/highestGameScores") {
     // TASK #13: Implement the /highestGameScores endpoint.
     // Add your implementation here.
-
+    await database.top10GameScores().then((response) => {
+      response.writeHead(200, { "Content-Type": "application/json" });
+      response.write(JSON.stringify(result));
+    });
     // HTTP status code 501 Not Implemented is returned by a server when the
     // request method is not supported by the server and cannot be handled. This
     // status code implies that the server either does not recognize the request
